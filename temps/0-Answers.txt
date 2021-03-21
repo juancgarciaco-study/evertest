@@ -1,0 +1,34 @@
+Problema 1)
+
+Basado en el anterior diagrama, Haría la resvisión en el siguiente orden
+
+1) Revisar el log de la aplicación y revisar si existe algun error no manejado o timeouts que se logren capturar por la aplicación
+2) Revisar el log del Web Server que contiene la aplicación para ver si es un bloqueo a nivel de comunicacion del web server, verificar bloqueos a nivel de puertos
+3) Sabiendo que método o servicio está presentando inconvenientes realizar una prueba directa al servicio para medir tiempos de respuesta
+4) revisar Tablas, vistas, indices y estadisticas de tablas que estén relacionadas con las consultas que se estén haciendo, si aplica para la base de datos y ejecutar estadisticas de Procedimientos almacenado o vistas materializadas
+5) Revisar tráfico entre el servidor Proxy o Balanceador y el servidor de aplicaciones para descartar problemas de comunicación, puertos o firewall.
+
+----------
+Problema2)
+---
+2.a) Obtener la cantidad de personas que trabajaron en el cargo ‘Software Engineer’ durante el mes agosto de 2016.
+--
+SELECT COUNT(1) as count_person
+FROM person_work_situation pws
+INNER JOIN charge_position cp ON (cp.id_charge_position = pws.id_charge_position)
+WHERE
+cp.name = 'Software Engineer'
+AND pws.year_month = 201608
+;
+--
+SELECT 
+  COUNT(1), SUM(phv.value) AS qty_person
+FROM
+  person_hour_value phv
+  INNER JOIN person_work_situation pws ON (pws.id_person = phv.id_person AND pws.year_month = phv.year_month)
+  INNER JOIN charge_position cp ON (cp.id_charge_position = pws.id_charge_position)
+WHERE
+  cp.name = 'Software Engineer'
+  AND pws.year_month BETWEEN 201703 and 201712
+;
+
